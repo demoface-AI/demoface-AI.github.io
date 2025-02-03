@@ -6,7 +6,7 @@
     Official project of demo samples for <br>
     <b><em>Emotional Face-to-Speech</em></b>
     </p>
-     <a href="https://arxiv.org/abs/2409.15936"><img src="https://img.shields.io/badge/arXiv-2409.15936-b31b1b.svg" alt="version"></a>    
+     <a href="https://arxiv.org/abs/"><img src="https://img.shields.io/badge/arXiv-2409.15936-b31b1b.svg" alt="version"></a>    
     <a href="https://github.com/Jiaxin-Ye/DepMamba"><img src="https://img.shields.io/badge/Platform-linux-lightgrey" alt="version"></a>
     <a href="https://github.com/Jiaxin-Ye/DepMamba"><img src="https://img.shields.io/badge/Python-3.8+-orange" alt="version"></a>
     <a href="https://github.com/Jiaxin-Ye/DepMamba"><img src="https://img.shields.io/badge/PyTorch-2.0+-brightgreen" alt="python"></a>
