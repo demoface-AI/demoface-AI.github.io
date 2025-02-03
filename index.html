@@ -1,0 +1,956 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>DEmoFace Homepage</title>
+    <link href="./css/style.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/bulma.min.css">
+    <link rel="stylesheet" href="./css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="./css/bulma-slider.min.css">
+    <link rel="stylesheet" href="./css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="stylesheet" href="./css/user.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <!-- <link rel="stylesheet" href="css/custom.css" /> -->
+    <link rel="icon" href="./src/logo.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML" async></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="./js/fontawesome.all.min.js"></script>
+    <script src="./js/bulma-carousel.min.js"></script>
+    <script src="./js/bulma-slider.min.js"></script>
+    <script src="./js/index.js"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+            startup: {
+                renderer: 'svg'
+              }
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+</head>
+
+<body data-new-gr-c-s-check-loaded="14.1091.0" data-gr-ext-installed="">
+    <div class="content">
+        <img src="src/title.png" , style="width: 100%;">
+        <br><br>
+        <p id="authors">
+            <a href="https://jiaxin-ye.github.io/">Jiaxin Ye <sup>1</sup></a>
+            <a href="https://scholar.google.com/citations?user=VBTZ-GMAAAAJ&hl=en">Boyuan Cao <sup>1</sup></a>
+            <a href="http://hmshan.io/">Hongming Shan <sup>1 †</sup></a>
+            <br>
+            <br>
+            <span style="font-size: 20px">
+                <sup>1</sup> Fudan University &nbsp;&nbsp;
+                <sup> † </sup> Corresponding Author
+            </span>
+            <br>
+        </p>
+        <p id="tldr">
+            <strong>TL;DR</strong>: We propose a novel discrete diffusion framework DEmoFace for a new task (Emotional Face-to-Speech, eF2S), which is the first attempt to customize consistent vocal style solely from the face.
+        </p>
+    </div>
+
+    <div class="container">
+        <header role="banner"></header>
+        
+        <main role="main">
+            <article itemscope="" itemtype="https://schema.org/BlogPosting">
+            <ul class="nav nav-tabs" id="myTab" role="tablist" style="display: flex; justify-content: center; align-items: center; width: 100%;">
+                <li class="nav-item" role="presentation">
+                <button id='init' class="nav-link" data-bs-toggle="tab" data-bs-target="#comparision-box"  type="button" role="tab"  style="font-size: 14pt; color: #054a99;">
+                    Comparision
+                    </button>
+                </li>
+
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#dubbing-box"  type="button" role="tab"  style="font-size: 14pt; color: #054a99;">
+                        Virtual Dubbing
+                    </button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#duration-box"  type="button" role="tab"  style="font-size: 14pt; color: #054a99;">
+                        Duration Controllability
+                    </button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#quantitative-box"  type="button" role="tab"  style="font-size: 14pt; color: #054a99;">
+                        Quantitative Results
+                    </button>
+                </li>
+
+                
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div id="comparision-box" role="tabpanel" class="tab-pane fade content">
+                        <h2 style="text-align:center;">
+                            <strong>Qualitative Comparision</strong>
+                        </h2>
+                        <section class="hero is-light is-small">
+                            <div class="hero-body">
+                                <div class="subcontent"> 
+                                    <div class="slider-row" style="flex-direction: row; justify-content: space-around; align-items: center;">
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Image</strong></p>
+                                            <img src="./data/comparison/M025_ang_3_028-Face.jpg" alt="Reference Image" 
+                                                style="display: flex; max-width: 50%; height: auto; border: 4px solid #6284ac; border-radius: 10px; 
+                                                        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);">
+                                            <br>
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Text</strong></p>
+                                            <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                        border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                No price is too high when true love is at stake.
+                                            </div>
+                                            <br>
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Emotion</strong></p>
+                                            <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                        border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                😡 Angry
+                                            </div>
+                                        </div>
+                
+                
+                                        <div class="slider-row" style="display: flex; flex-direction: column; ">
+                                            <div>
+                                                <p style="text-align: center; color: rgb(197, 84, 9);"><strong>Ground Truth</strong></p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/M025_ang_3_028-GT.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">EmoSpeech</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/M025_ang_3_028-EmoSpeech.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">FastSpeech 2</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/M025_ang_3_028-FastSpeech 2.wav" type="audio/wav">
+                                                </audio>
+                                            </div> 
+                                            <div>
+                                                <p style="text-align: center;">StyleDubber</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/M025_ang_3_028-StyleDubber.wav" type="audio/wav">
+                                                </audio>
+                                            </div>                            
+                                        </div>
+                
+                                        <div class="slider-row" style="display: flex; flex-direction: column;">
+                                            <div>
+                                                <p style="text-align: center; color: rgb(8, 92, 211);"><strong>Ours</strong></p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/M025_ang_3_028-DEmoFace.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center; ">Face-TTS</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/M025_ang_3_028-Face-TTS.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">V2C-Net</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/M025_ang_3_028-V2C.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">HPM</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/M025_ang_3_028-HPM.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="subcontent">
+
+                                    <div class="slider-row" style="flex-direction: row; justify-content: space-around; align-items: center;">
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Image</strong></p>
+                                            <img src="./data/comparison/W011_sad_3_024-Face.jpg" alt="Reference Image" 
+                                                style="display: flex; max-width: 50%; height: auto; border: 4px solid #6284ac; border-radius: 10px; 
+                                                        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);">
+                                            <br>
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Text</strong></p>
+                                            <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                        border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                Land-based reader would help with this task.
+                                            </div>
+                                            <br>
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Emotion</strong></p>
+                                            <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                        border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                💔 Sad
+                                            </div>
+                                        </div>
+                
+                
+                                        <div class="slider-row" style="display: flex; flex-direction: column; ">
+                                            <div>
+                                                <p style="text-align: center; color: rgb(197, 84, 9);"><strong>Ground Truth</strong></p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W011_sad_3_024-GT.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">EmoSpeech</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W011_sad_3_024-EmoSpeech.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">FastSpeech 2</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W011_sad_3_024-FastSpeech 2.wav" type="audio/wav">
+                                                </audio>
+                                            </div> 
+                                            <div>
+                                                <p style="text-align: center;">StyleDubber</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W011_sad_3_024-StyleDubber.wav" type="audio/wav">
+                                                </audio>
+                                            </div>                            
+                                        </div>
+                
+                                        <div class="slider-row" style="display: flex; flex-direction: column;">
+                                            <div>
+                                                <p style="text-align: center; color: rgb(8, 92, 211);"><strong>Ours</strong></p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W011_sad_3_024-DEmoFace.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center; ">Face-TTS</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W011_sad_3_024-Face-TTS.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">V2C-Net</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W011_sad_3_024-V2C.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">HPM</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W011_sad_3_024-HPM.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="subcontent">
+
+                                    <div class="slider-row" style="flex-direction: row; justify-content: space-around; align-items: center;">
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Image</strong></p>
+                                            <img src="./data/comparison/03-01-08-02-01-01-16-Face.jpg" alt="Reference Image" 
+                                                style="display: flex; max-width: 50%; height: auto; border: 4px solid #6284ac; border-radius: 10px; 
+                                                        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);">
+                                            <br>
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Text</strong></p>
+                                            <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                        border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                Kids are talking by the door.
+                                            </div>
+                                            <br>
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Emotion</strong></p>
+                                            <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                        border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                😲 Surprised
+                                            </div>
+                                        </div>
+                
+                
+                                        <div class="slider-row" style="display: flex; flex-direction: column; ">
+                                            <div>
+                                                <p style="text-align: center; color: rgb(197, 84, 9);"><strong>Ground Truth</strong></p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/03-01-08-02-01-01-16-GT.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">EmoSpeech</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/03-01-08-02-01-01-16-EmoSpeech.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">FastSpeech 2</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/03-01-08-02-01-01-16-FastSpeech 2.wav" type="audio/wav">
+                                                </audio>
+                                            </div> 
+                                            <div>
+                                                <p style="text-align: center;">StyleDubber</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/03-01-08-02-01-01-16-StyleDubber.wav" type="audio/wav">
+                                                </audio>
+                                            </div>                            
+                                        </div>
+                
+                                        <div class="slider-row" style="display: flex; flex-direction: column;">
+                                            <div>
+                                                <p style="text-align: center; color: rgb(8, 92, 211);"><strong>Ours</strong></p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/03-01-08-02-01-01-16-DEmoFace.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center; ">Face-TTS</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/03-01-08-02-01-01-16-Face-TTS.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">V2C-Net</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/03-01-08-02-01-01-16-V2C.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">HPM</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/03-01-08-02-01-01-16-HPM.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                
+                                <br>
+                                <div class="subcontent">
+
+                                    <div class="slider-row" style="flex-direction: row; justify-content: space-around; align-items: center;">
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Image</strong></p>
+                                            <img src="./data/comparison/W019_neu_1_035-Face.jpg" alt="Reference Image" 
+                                                style="display: flex; max-width: 50%; height: auto; border: 4px solid #6284ac; border-radius: 10px; 
+                                                        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);">
+                                            <br>
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Text</strong></p>
+                                            <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                        border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                The plaintiff in school desegregation cases.
+                                            </div>
+                                            <br>
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Emotion</strong></p>
+                                            <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                        border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                😐 Neutral
+                                            </div>
+                                        </div>
+                
+                
+                                        <div class="slider-row" style="display: flex; flex-direction: column; ">
+                                            <div>
+                                                <p style="text-align: center; color: rgb(197, 84, 9);"><strong>Ground Truth</strong></p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W019_neu_1_035-GT.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">EmoSpeech</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W019_neu_1_035-EmoSpeech.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">FastSpeech 2</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W019_neu_1_035-FastSpeech 2.wav" type="audio/wav">
+                                                </audio>
+                                            </div> 
+                                            <div>
+                                                <p style="text-align: center;">StyleDubber</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W019_neu_1_035-StyleDubber.wav" type="audio/wav">
+                                                </audio>
+                                            </div>                            
+                                        </div>
+                
+                                        <div class="slider-row" style="display: flex; flex-direction: column;">
+                                            <div>
+                                                <p style="text-align: center; color: rgb(8, 92, 211);"><strong>Ours</strong></p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W019_neu_1_035-DEmoFace.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center; ">Face-TTS</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W019_neu_1_035-Face-TTS.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">V2C-Net</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W019_neu_1_035-V2C.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">HPM</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W019_neu_1_035-HPM.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+
+                                <br>
+                                <div class="subcontent">
+
+                                    <div class="slider-row" style="flex-direction: row; justify-content: space-around; align-items: center;">
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Image</strong></p>
+                                            <img src="./data/comparison/W011_dis_3_016-Face.jpg" alt="Reference Image" 
+                                                style="display: flex; max-width: 50%; height: auto; border: 4px solid #6284ac; border-radius: 10px; 
+                                                        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);">
+                                            <br>
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Text</strong></p>
+                                            <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                        border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                If the farm is rented, the rent must be paid.
+                                            </div>
+                                            <br>
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Emotion</strong></p>
+                                            <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                        border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                😠 Disgust
+                                            </div>
+                                        </div>
+                
+                
+                                        <div class="slider-row" style="display: flex; flex-direction: column; ">
+                                            <div>
+                                                <p style="text-align: center; color: rgb(197, 84, 9);"><strong>Ground Truth</strong></p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W011_dis_3_016-GT.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">EmoSpeech</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W011_dis_3_016-EmoSpeech.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">FastSpeech 2</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W011_dis_3_016-FastSpeech 2.wav" type="audio/wav">
+                                                </audio>
+                                            </div> 
+                                            <div>
+                                                <p style="text-align: center;">StyleDubber</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W011_dis_3_016-StyleDubber.wav" type="audio/wav">
+                                                </audio>
+                                            </div>                            
+                                        </div>
+                
+                                        <div class="slider-row" style="display: flex; flex-direction: column;">
+                                            <div>
+                                                <p style="text-align: center; color: rgb(8, 92, 211);"><strong>Ours</strong></p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W011_dis_3_016-DEmoFace.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center; ">Face-TTS</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W011_dis_3_016-Face-TTS.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">V2C-Net</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W011_dis_3_016-V2C.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">HPM</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W011_dis_3_016-HPM.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+
+                                <br>
+                                <div class="subcontent">
+
+                                    <div class="slider-row" style="flex-direction: row; justify-content: space-around; align-items: center;">
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Image</strong></p>
+                                            <img src="./data/comparison/M025_fea_3_004-Face.jpg" alt="Reference Image" 
+                                                style="display: flex; max-width: 50%; height: auto; border: 4px solid #6284ac; border-radius: 10px; 
+                                                        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);">
+                                            <br>
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Text</strong></p>
+                                            <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                        border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                Call an ambulance for medical assistance.
+                                            </div>
+                                            <br>
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Emotion</strong></p>
+                                            <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                        border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                😨 Fear
+                                            </div>
+                                        </div>
+                
+                
+                                        <div class="slider-row" style="display: flex; flex-direction: column; ">
+                                            <div>
+                                                <p style="text-align: center; color: rgb(197, 84, 9);"><strong>Ground Truth</strong></p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/M025_fea_3_004-GT.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">EmoSpeech</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/M025_fea_3_004-EmoSpeech.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">FastSpeech 2</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/M025_fea_3_004-FastSpeech 2.wav" type="audio/wav">
+                                                </audio>
+                                            </div> 
+                                            <div>
+                                                <p style="text-align: center;">StyleDubber</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/M025_fea_3_004-StyleDubber.wav" type="audio/wav">
+                                                </audio>
+                                            </div>                            
+                                        </div>
+                
+                                        <div class="slider-row" style="display: flex; flex-direction: column;">
+                                            <div>
+                                                <p style="text-align: center; color: rgb(8, 92, 211);"><strong>Ours</strong></p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/M025_fea_3_004-DEmoFace.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center; ">Face-TTS</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/M025_fea_3_004-Face-TTS.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">V2C-Net</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/M025_fea_3_004-V2C.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">HPM</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/M025_fea_3_004-HPM.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+
+                                <br>
+                                <div class="subcontent">
+
+                                    <div class="slider-row" style="flex-direction: row; justify-content: space-around; align-items: center;">
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Image</strong></p>
+                                            <img src="./data/comparison/W037_hap_3_035-Face.jpg" alt="Reference Image" 
+                                                style="display: flex; max-width: 50%; height: auto; border: 4px solid #6284ac; border-radius: 10px; 
+                                                        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);">
+                                            <br>
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Text</strong></p>
+                                            <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                        border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                Obviously, the bridal phase has many adjustments to make to their new situation.
+                                            </div>
+                                            <br>
+                                            <p style="font-size: 18px;text-align: center;"><strong>Reference Emotion</strong></p>
+                                            <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                        border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                🙂️ Happy
+                                            </div>
+                                        </div>
+                
+                
+                                        <div class="slider-row" style="display: flex; flex-direction: column; ">
+                                            <div>
+                                                <p style="text-align: center; color: rgb(197, 84, 9);"><strong>Ground Truth</strong></p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W037_hap_3_035-GT.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">EmoSpeech</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W037_hap_3_035-EmoSpeech.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">FastSpeech 2</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W037_hap_3_035-FastSpeech 2.wav" type="audio/wav">
+                                                </audio>
+                                            </div> 
+                                            <div>
+                                                <p style="text-align: center;">StyleDubber</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W037_hap_3_035-StyleDubber.wav" type="audio/wav">
+                                                </audio>
+                                            </div>                            
+                                        </div>
+                
+                                        <div class="slider-row" style="display: flex; flex-direction: column;">
+                                            <div>
+                                                <p style="text-align: center; color: rgb(8, 92, 211);"><strong>Ours</strong></p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W037_hap_3_035-DEmoFace.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center; ">Face-TTS</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W037_hap_3_035-Face-TTS.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">V2C-Net</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W037_hap_3_035-V2C.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            <div>
+                                                <p style="text-align: center;">HPM</p>
+                                                <audio controls class="tiny-audio-player">
+                                                    <source src="./data/comparison/W037_hap_3_035-HPM.wav" type="audio/wav">
+                                                </audio>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                
+                            </div>
+                        </section>
+                        <details>
+                            <summary> See Mel-Spectrogram Comparison </summary>
+                            <img src="data/fig/main_mel.png" , style="width: 100%;">
+                            <p>
+                                As shown in Fig. 3, from mel-spectrogram in the first row, we observe severe temporal differences and over-smoothing issues in Face-TTS, Emo-Speech, and V2C-Net, causing duration asynchronization and quality degradation. Furthermore, from the F0 curve in the third row, the other baselines exhibit distinct F0 contours showing different pitch, emotion, and intonation with the ground truth (GT). In contrast, our results are closer to the GT, benefiting from enhanced multi-conditional generation and dynamic synchronization capabilities of DEMOFACE.
+                            </p>
+                        </details>
+                
+    
+                   
+                </div>
+                
+                <div id="dubbing-box" role="tabpanel" class="tab-pane fade content">
+                    <h2 style="text-align:center;">
+                        <strong>Virtual Characters Dubbing</strong>
+                    </h2>
+                    <p>
+                        To evaluate the performance of our method in 'in the wild' scenarios, we employed the <strong>Flux model</strong> to generate a series of virtual faces, which were used as face prompts to drive audio synthesis.
+                    </p>
+
+                    <section class="hero is-light is-small">
+                        <div class="hero-body" style="flex-direction: column;">
+                            
+                            <div class="subcontent">
+                                <div class="slider-row" style="flex-direction: row; justify-content: space-around; align-items: center;">
+                                    <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                                        <p style="font-size: 18px;text-align: center;"><strong>Reference Image</strong></p>
+                                        <img src="./data/dubbing/30_female_angry_office.png" alt="Reference Image" 
+                                            style="display: flex; max-width: 30%; height: auto; border: 4px solid #6284ac; border-radius: 10px; 
+                                                    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);">
+                                        <br>
+                                        <div style="display: flex; flex-direction: row;">
+                                            <div style="display: flex; flex-direction: column;">
+                                                <p style="font-size: 18px;text-align: center;"><strong>Reference Text</strong></p>
+                                                <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                            border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                    You're not living up to your own principles she have told me.
+                                                </div>
+                                            </div>
+                                            <div style="width: 20px;"></div>
+                                            <div style="display: flex; flex-direction: column;">
+                                                <p style="font-size: 18px;text-align: center;"><strong>Reference Emotion</strong></p>
+                                                <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                            border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                    😡 Angry
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <br>
+                                        <div>
+                                            <p style="text-align: center; font-size: 18pt; font-weight: bolder; color: rgb(24, 77, 175);">Imagine the voice🪄</p>
+                                            <audio controls class="tiny-audio-player">
+                                                <source src="./data/dubbing/speech/Pred-30_female_angry_office.wav" type="audio/wav">
+                                            </audio>
+                                        </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="subcontent">
+                                <div class="slider-row" style="flex-direction: row; justify-content: space-around; align-items: center;">
+                                    <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                                        <p style="font-size: 18px;text-align: center;"><strong>Reference Image</strong></p>
+                                        <img src="./data/dubbing/30_male_sad_beach.png" alt="Reference Image" 
+                                            style="display: flex; max-width: 30%; height: auto; border: 4px solid #6284ac; border-radius: 10px; 
+                                                    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);">
+                                        <br>
+                                        <div style="display: flex; flex-direction: row;">
+                                            <div style="display: flex; flex-direction: column;">
+                                                <p style="font-size: 18px;text-align: center;"><strong>Reference Text</strong></p>
+                                                <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                            border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                    You're not living up to your own principles she have told me.
+                                                </div>
+                                            </div>
+                                            <div style="width: 20px;"></div>
+                                            <div style="display: flex; flex-direction: column;">
+                                                <p style="font-size: 18px;text-align: center;"><strong>Reference Emotion</strong></p>
+                                                <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                            border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                💔 Sad
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <br>
+                                        <div>
+                                            <p style="text-align: center; font-size: 18pt; font-weight: bolder; color: rgb(24, 77, 175);">Imagine the voice🪄</p>
+                                            <audio controls class="tiny-audio-player">
+                                                <source src="./data/dubbing/speech/Pred-30_male_sad_beach.wav" type="audio/wav">
+                                            </audio>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="subcontent">
+                                <div class="slider-row" style="flex-direction: row; justify-content: space-around; align-items: center;">
+                                    <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                                        <p style="font-size: 18px;text-align: center;"><strong>Reference Image</strong></p>
+                                        <img src="./data/dubbing/30_female_happy_wild.png" alt="Reference Image" 
+                                            style="display: flex; max-width: 30%; height: auto; border: 4px solid #6284ac; border-radius: 10px; 
+                                                    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);">
+                                        <br>
+                                        <div style="display: flex; flex-direction: row;">
+                                            <div style="display: flex; flex-direction: column;">
+                                                <p style="font-size: 18px;text-align: center;"><strong>Reference Text</strong></p>
+                                                <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                            border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                    You're not living up to your own principles she have told me.
+                                                </div>
+                                            </div>
+                                            <div style="width: 20px;"></div>
+                                            <div style="display: flex; flex-direction: column;">
+                                                <p style="font-size: 18px;text-align: center;"><strong>Reference Emotion</strong></p>
+                                                <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                            border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                    😊 Happy
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <br>
+                                        <div>
+                                            <p style="text-align: center; font-size: 18pt; font-weight: bolder; color: rgb(24, 77, 175);">Imagine the voice🪄</p>
+                                            <audio controls class="tiny-audio-player">
+                                                <source src="./data/dubbing/speech/Pred-30_female_happy_wild.wav" type="audio/wav">
+                                            </audio>
+                                        </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="subcontent">
+                                <div class="slider-row" style="flex-direction: row; justify-content: space-around; align-items: center;">
+                                    <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                                        <p style="font-size: 18px;text-align: center;"><strong>Reference Image</strong></p>
+                                        <img src="./data/dubbing/40_male_fear_wild.png" alt="Reference Image" 
+                                            style="display: flex; max-width: 30%; height: auto; border: 4px solid #6284ac; border-radius: 10px; 
+                                                    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);">
+                                        <br>
+                                        <div style="display: flex; flex-direction: row;">
+                                            <div style="display: flex; flex-direction: column;">
+                                                <p style="font-size: 18px;text-align: center;"><strong>Reference Text</strong></p>
+                                                <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                            border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                    You're not living up to your own principles she have told me.
+                                                </div>
+                                            </div>
+                                            <div style="width: 20px;"></div>
+                                            <div style="display: flex; flex-direction: column;">
+                                                <p style="font-size: 18px;text-align: center;"><strong>Reference Emotion</strong></p>
+                                                <div style="font-size: 16px; color: #242425; line-height: 1.6; background-color: #FFFFFF; padding: 10px; 
+                                                            border: 2px solid #bfc0c1; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);">
+                                                    😨 Fear
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <br>
+                                        <div>
+                                            <p style="text-align: center; font-size: 18pt; font-weight: bolder; color: rgb(24, 77, 175);">Imagine the voice🪄</p>
+                                            <audio controls class="tiny-audio-player">
+                                                <source src="./data/dubbing/speech/Pred-40_male_fear_wild.wav" type="audio/wav">
+                                            </audio>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+
+
+                <div id="quantitative-box" role="tabpanel" class="tab-pane fade content">
+                        <h3 style="text-align:center;">
+                            <strong>Quantitative Results</strong>
+                        </h3>
+                        <img src="data/fig/main_obj.png" , style="width: 100%;">
+                        <p>
+                            As shown in Tab.1, compared with Face-TTS, we achieve <strong>17.35% and 47.11%</strong> improvements in terms of EmoSim and SpkSim, reflecting the great ability to maintain voice-identity while enhancing consistency. For prosody modeling, we can estimate a more precise F0 contour with relative <strong>14.95%</strong> gains, exhibiting more natural speech expressiveness. The MCD improved by a relative <strong>18.96%</strong>, indicating minimal acoustic difference with the target speech. While Face-TTS achieves a better WER by utilizing over 10 times the data, DEmoFace significantly improves naturalness and consistency with fewer data. 
+                        </p>
+                        <h3 style="text-align:center;">
+                            <strong>User Study</strong>
+                        </h3>
+                        <div style="text-align: center;">
+                            <img src="data/fig/main_sub.png" , style="width: 50%; text-align: center;">
+                        </div>
+                        
+                        <p>
+                            DEmoface demonstrates a clear advantage over SOTA methods in both metrics, particularly in achieving higher MOS naturalness with 28% relative improvement, which validates the effectiveness of our method. Furthermore, compared to acoustic-guided EmoSpeech, we achieve better MOS consistency, demonstrating our ability to generate speech with greater emotional and identity consistency.
+                        </p>
+                </div>
+
+                <div
+              id="duration-box"
+              role="tabpanel"
+              class="tab-pane fade container pt-5 shadow p-5 mb-5 bg-white rounded content" 
+            >
+              <h2 id="speech-rate-contrl" style="text-align: center">Speech Duration Controllability</h2>
+              <p>
+                We can synthesize the same text into speech of varying lengths due to our dynamic alignment between speech and text.
+              </p>
+              <p style="text-align: center">
+                <img src="./data/duration/duration.png" height="500" width="1000"
+                  class="img-fluid" />
+              </p>
+              <div class="card card-body ditto-card">
+                <div class="ditto-sample-box">
+                  <div class="table-responsive pt-3">
+                    <table class="table table-hover pt-2">
+                      <thead>
+                        <tr>
+                          <th>Text</th>
+                          <th>Length </th>
+                          <th>Sample</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td data-label="Text" rowspan="3">The plaintiff in school desegregation cases.</td>
+                        </tr>
+                        <tr>
+                          <td data-label="Length">2 Seconds</td>
+                          <td data-label="Sample">
+                            <audio controls="controls" preload="none" src="data/duration/Pred-30_female_sad_home2.wav"></audio>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td data-label="Length">5 Seconds</td>
+                          <td data-label="Sample">
+                            <audio controls="controls" preload="none" src="data/duration/Pred-30_female_sad_home5.wav"></audio>
+                          </td>
+                        </tr>
+    
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+            
+            </article>
+        </main>    
+    </div>
+   
+    
+    
+    
+    <div id="fab" class="fab">
+        <a class="mainop" href="#myTab">
+            <i class="bi bi-arrow-bar-up"></i>
+        </a>
+    </div>
+
+
+    <script>
+        function muteAll() {
+            const elements = document.querySelectorAll('[id^="gallary_dub"]');
+            
+            elements.forEach(element => {
+                element.muted = true;
+            });
+        }
+    </script>
+
+    <script>
+        // 自动点击按钮
+        document.addEventListener('DOMContentLoaded', function () {
+            // 模拟点击按钮
+            document.getElementById('init').click();
+        });
+
+    </script>
+
+</body>
+
+</html>
